@@ -9,12 +9,36 @@ const path          = require('path');
 
 const app    = express();
 const server = http.createServer(app);
-const io     = socketIo(server, {
-  cors: { origin: process.env.CLIENT_URL || 'http://localhost:3000', methods: ['GET', 'POST'] }
+const io = new Server(server, {
+  cors: {
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
 });
 
 /* ---------- middleware ---------- */
-app.use(cors());
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://spedfire1231.github.io",
+];
+
+app.use(
+  cors({
+    origin: (origin, cb) => {
+      if (!origin) return cb(null, true); // postman/server-to-server
+      if (allowedOrigins.includes(origin)) return cb(null, true);
+      return cb(new Error("Not allowed by CORS: " + origin));
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+// ✅ preflight
+app.options("*", cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/scripts", require("./routes/scripts"));

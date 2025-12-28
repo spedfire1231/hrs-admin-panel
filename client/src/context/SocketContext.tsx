@@ -4,9 +4,9 @@ import {
   useEffect,
   useRef,
   useState,
-} from 'react';
-import { io, Socket } from 'socket.io-client';
-import { useAuth } from './AuthContext';
+} from "react";
+import { io, Socket } from "socket.io-client";
+import { useAuth } from "./AuthContext";
 
 interface OnlineUser {
   email: string;
@@ -17,12 +17,13 @@ interface SocketContextType {
   onlineUsers: OnlineUser[];
 }
 
-const SocketContext = createContext<SocketContextType | undefined>(undefined);
+const SocketContext = createContext<SocketContextType>({
+  socket: null,
+  onlineUsers: [],
+});
 
 export const useSocket = () => {
-  const ctx = useContext(SocketContext);
-  if (!ctx) throw new Error('useSocket must be used within SocketProvider');
-  return ctx;
+  return useContext(SocketContext);
 };
 
 export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -33,34 +34,53 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>([]);
 
   useEffect(() => {
-    // ⛔ чекаємо поки auth 100% готовий
     if (loading) return;
     if (!user?.email) return;
 
-    console.log('[socket] creating with email:', user.email);
+    const API_URL = process.env.REACT_APP_API_URL;
 
-    const socket = io(process.env.REACT_APP_API_URL!, {
-      auth: { email: user.email },
-      transports: ['websocket'],
-    });
+    // ⛔ якщо API не заданий — просто не підключаємось
+    if (!API_URL) {
+      console.warn("[socket] API URL not set, skipping socket");
+      return;
+    }
 
-    socketRef.current = socket;
+    try {
+      console.log("[socket] connecting to:", API_URL);
 
-    socket.on('online-users-update', (users: any[]) => {
-      const safe = Array.isArray(users)
-        ? users.filter(u => u && typeof u.email === 'string')
-        : [];
-      setOnlineUsers(safe);
-    });
+      const socket = io(API_URL, {
+        auth: { email: user.email },
+        transports: ["websocket"],
+        withCredentials: true,
+      });
 
-    socket.on('disconnect', () => {
-      setOnlineUsers([]);
-    });
+      socketRef.current = socket;
 
-    return () => {
-      socket.disconnect();
-      socketRef.current = null;
-    };
+      socket.on("online-users-update", (users: any[]) => {
+        if (!Array.isArray(users)) return;
+        setOnlineUsers(
+          users.filter(
+            (u) => u && typeof u.email === "string"
+          )
+        );
+      });
+
+      socket.on("connect_error", (err) => {
+        console.warn("[socket] connect error:", err.message);
+      });
+
+      socket.on("disconnect", () => {
+        setOnlineUsers([]);
+      });
+
+      return () => {
+        socket.disconnect();
+        socketRef.current = null;
+        setOnlineUsers([]);
+      };
+    } catch (e) {
+      console.warn("[socket] init failed", e);
+    }
   }, [loading, user?.email]);
 
   return (

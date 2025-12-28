@@ -1,59 +1,10 @@
-# ======================
-# Node
-# ======================
-node_modules/
-**/node_modules/
-
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# ======================
-# Build artifacts
-# ======================
-build/
-client/build/
-dist/
-out/
-release/
-
-# ======================
-# Electron
-# ======================
-*.exe
-*.dmg
-*.pkg
-*.AppImage
-
-# ======================
-# Env files
-# ======================
+node_modules
+client/node_modules
+server/node_modules
 .env
-.env.local
-.env.production
-.env.development
-
-# ======================
-# OS / IDE
-# ======================
+client/.env.local
+server/.env
+build
+client/build
+dist
 .DS_Store
-Thumbs.db
-.vscode/
-.idea/
-
-# ======================
-# Logs
-# ======================
-logs/
-*.log
-
-# ======================
-# Coverage
-# ======================
-coverage/
-
-# ======================
-# Cache
-# ======================
-.cache/
-.tmp/

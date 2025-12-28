@@ -1,0 +1,38 @@
+/* =====================================
+   HRS ADMIN v3 — CYBER LIGHT TOKENS
+===================================== */
+
+:root {
+  /* ---- Base ---- */
+  --bg-main: #f4f7fb;
+  --bg-soft: rgba(255, 255, 255, 0.72);
+  --bg-glass: rgba(255, 255, 255, 0.55);
+
+  /* ---- Text ---- */
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+
+  /* ---- Accent ---- */
+  --accent-primary: #4f46e5; /* cyber blue-violet */
+  --accent-secondary: #22c55e;
+  --accent-warning: #f59e0b;
+  --accent-danger: #ef4444;
+
+  /* ---- Borders ---- */
+  --border-soft: rgba(15, 23, 42, 0.12);
+  --border-accent: rgba(79, 70, 229, 0.35);
+
+  /* ---- Radius ---- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  /* ---- Shadows ---- */
+  --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 12px 30px rgba(15, 23, 42, 0.12);
+  --shadow-lg: 0 20px 50px rgba(15, 23, 42, 0.18);
+
+  /* ---- Glow (cyber) ---- */
+  --glow-primary: 0 0 0 2px rgba(79, 70, 229, 0.18),
+                  0 0 20px rgba(79, 70, 229, 0.25);
+}

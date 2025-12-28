@@ -1,0 +1,20 @@
+{
+  "name": "hrs-admin-panel",
+  "version": "1.0.0",
+  "description": "HRS Admin Panel - Web interface for managing HRS system",
+  "homepage": "https://<username>.github.io/hrs-admin",
+  "scripts": {
+    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "server:dev": "cd server && npm run dev",
+    "client:dev": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start",
+    "install-deps": "npm install && cd server && npm install && cd ../client && npm install",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d client/build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "gh-pages": "^6.3.0"
+  }
+}

@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/hrs-admin-panel/static/css/main.d526e584.css",
-    "main.js": "/hrs-admin-panel/static/js/main.9d115c27.js",
+    "main.js": "/hrs-admin-panel/static/js/main.63268269.js",
     "index.html": "/hrs-admin-panel/index.html",
     "main.d526e584.css.map": "/hrs-admin-panel/static/css/main.d526e584.css.map",
-    "main.9d115c27.js.map": "/hrs-admin-panel/static/js/main.9d115c27.js.map"
+    "main.63268269.js.map": "/hrs-admin-panel/static/js/main.63268269.js.map"
   },
   "entrypoints": [
     "static/css/main.d526e584.css",
-    "static/js/main.9d115c27.js"
+    "static/js/main.63268269.js"
   ]
 }

@@ -1,9 +1,6 @@
 node_modules
 client/node_modules
 server/node_modules
-.env
-client/.env.local
-server/.env
 build
 client/build
 dist

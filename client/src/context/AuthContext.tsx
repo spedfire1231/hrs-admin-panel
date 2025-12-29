@@ -55,17 +55,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const login = async (email: string, password: string) => {
-    try {
-      const response = await axios.post("/api/auth/login")
+  const response = await axios.post("/api/auth/login", {
+    email,
+    password,
+  });
 
-      const { token, user } = response.data;
-      localStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      setUser(user);
-    } catch (error: any) {
-      throw new Error(error.response?.data?.error || 'Ошибка входа');
-    }
-  };
+  const { token, user } = response.data;
+  localStorage.setItem("token", token);
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  setUser(user);
+};
+
 
   const logout = () => {
     localStorage.removeItem('token');

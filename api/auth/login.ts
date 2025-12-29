@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-export default async function handler(
+export default function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
@@ -10,11 +10,6 @@ export default async function handler(
 
   const { email, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(400).json({ error: "Missing credentials" });
-  }
-
-  // ТИМЧАСОВА перевірка (щоб перевірити, що ВСЕ ПРАЦЮЄ)
   if (email === "admin@hrs.com" && password === "1234") {
     return res.status(200).json({
       token: "test-token",

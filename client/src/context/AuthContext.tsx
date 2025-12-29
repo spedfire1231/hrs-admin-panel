@@ -1,3 +1,4 @@
+// AuthContext.tsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -43,8 +44,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const verifyToken = async () => {
     try {
-      const response = await axios.get("/api/auth/verify");
-
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/auth/verify`
+      );
       setUser(response.data.user);
     } catch (error) {
       localStorage.removeItem('token');
@@ -56,7 +58,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await axios.post("/api/auth/login", { email, password });
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/auth`,
+        { email, password }
+      );
 
       const { token, user } = response.data;
       localStorage.setItem('token', token);

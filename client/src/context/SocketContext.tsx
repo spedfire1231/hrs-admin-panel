@@ -1,3 +1,4 @@
+// SocketContext.tsx
 import {
   createContext,
   useContext,
@@ -48,7 +49,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       console.log("[socket] connecting to:", API_URL);
 
-      const socket = io(API_URL, {
+      const socket = io(API_URL.replace('/api',''), {
         auth: { email: user.email },
         transports: ["websocket"],
         withCredentials: true,

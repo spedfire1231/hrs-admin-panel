@@ -5,7 +5,7 @@ export default function handler(
   res: VercelResponse
 ) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method Not Allowed" });
+    return res.status(405).end();
   }
 
   const { email, password } = req.body;

@@ -20,10 +20,11 @@ const io = new Server(server, {
 
 /* ---------- middleware ---------- */
 
+// server.js
 const allowedOrigins = [
   "http://localhost:3000",
   "https://spedfire1231.github.io",
-  "https://hrs-admin.pablosidels.workers.dev"   // ← новый
+  "https://hrs-admin.pablosidels.github.io", // ← добавьте этот домен
 ];
 
 app.use(

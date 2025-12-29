@@ -40,7 +40,6 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const API_URL = process.env.REACT_APP_API_URL;
 
-    // ⛔ якщо API не заданий — просто не підключаємось
     if (!API_URL) {
       console.warn("[socket] API URL not set, skipping socket");
       return;
@@ -49,7 +48,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       console.log("[socket] connecting to:", API_URL);
 
-      const socket = io(API_URL.replace('/api',''), {
+      const socket = io(API_URL, {
         auth: { email: user.email },
         transports: ["websocket"],
         withCredentials: true,
@@ -60,9 +59,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
       socket.on("online-users-update", (users: any[]) => {
         if (!Array.isArray(users)) return;
         setOnlineUsers(
-          users.filter(
-            (u) => u && typeof u.email === "string"
-          )
+          users.filter((u) => u && typeof u.email === "string")
         );
       });
 

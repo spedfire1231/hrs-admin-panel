@@ -145,7 +145,7 @@ const Dashboard: React.FC = () => {
                 <FiUsers className="w-5 h-5 text-primary-500 mr-3" />
                 <div>
                   <p className="font-medium text-gray-900">Добавить пользователя</p>
-                  <p className="text-sm text-gray-600">Создать новую учетную запись</p>
+                  <p className="text-sm text-gray-600">Создать новую учетную запись </p>
                 </div>
               </div>
             </button>

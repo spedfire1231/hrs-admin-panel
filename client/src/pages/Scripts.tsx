@@ -134,7 +134,7 @@ export default function Scripts() {
   }
 
   async function remove(row: ScriptRow) {
-    const ok = confirm(`Delete script "${row.title}"?`);
+    const ok = window.confirm(`Delete script "${row.title}"?`);
     if (!ok) return;
 
     const { error } = await supabase.from("scripts").delete().eq("id", row.id);

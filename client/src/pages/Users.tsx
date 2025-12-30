@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import { useAuth } from "../context/AuthContext"; // якщо ще нема
 
 type Profile = {
   id: string;
@@ -34,27 +35,46 @@ export default function Users() {
     fetchUsers();
   }, []);
 
-  async function createUser() {
-    if (!email || !password) return alert("Email + password required");
+   const { session } = useAuth();
 
-    const res = await fetch("/api/create-user", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, role, name }),
-    });
-
-    if (!res.ok) {
-      const e = await res.json();
-      return alert(e.error || "Failed");
-    }
-
-    setOpen(false);
-    setEmail("");
-    setPassword("");
-    setName("");
-    setRole("viewer");
-    fetchUsers();
+async function createUser() {
+  if (!email || !password) {
+    alert("Email and password required");
+    return;
   }
+
+  const res = await fetch(
+    "https://eyijtbrawiawwufrcutf.supabase.co/functions/v1/create-user",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.access_token}`,
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        role,
+        name,
+      }),
+    }
+  );
+
+  if (!res.ok) {
+    const text = await res.text();
+    console.error(text);
+    alert("Create user failed: " + text);
+    return;
+  }
+
+  setOpen(false);
+  setEmail("");
+  setPassword("");
+  setName("");
+  setRole("viewer");
+
+  fetchUsers();
+}
 
   return (
     <div className="page">

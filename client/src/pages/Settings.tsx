@@ -9,9 +9,10 @@ const Settings: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'profile' | 'security'>('profile');
 
   // ---------- ПРОФИЛЬ ----------
+  const { name } = useAuth();
+
   const [profile, setProfile] = useState({
-    firstName: user?.firstName ?? '',
-    lastName: user?.lastName ?? '',
+    name: name ?? '',
   });
 
   // ---------- ПАРОЛЬ ----------
@@ -92,8 +93,8 @@ const Settings: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Имя</label>
                 <input
                   type="text"
-                  value={profile.firstName}
-                  onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
+                  value={profile.name}
+                  onChange={(e) => setProfile({ ...profile, name: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                 />
               </div>
@@ -101,8 +102,8 @@ const Settings: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Фамилия</label>
                 <input
                   type="text"
-                  value={profile.lastName}
-                  onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
+                  value={profile.name}
+                  onChange={(e) => setProfile({ ...profile, name: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                 />
               </div>

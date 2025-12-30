@@ -21,7 +21,7 @@ interface DashboardStats {
 }
 
 const Dashboard: React.FC = () => {
-  const { user } = useAuth();
+  const { user, name } = useAuth();
   const { onlineUsers } = useSocket();
   const [stats, setStats] = useState<DashboardStats>({
     totalUsers: 0,
@@ -105,7 +105,7 @@ const Dashboard: React.FC = () => {
     {/* HERO */}
     <div className="db-hero">
       <h1>
-        Добро пожаловать, {user?.firstName || user?.email} 
+        Добро пожаловать, {name || user?.email}
       </h1>
       <p>Управление пользователями и контентом системы HRS</p>
     </div>

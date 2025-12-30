@@ -1,92 +1,128 @@
-import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
-const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError(null);
     setLoading(true);
 
     try {
       await login(email, password);
-      navigate('/');
+      navigate("/"); // або /dashboard
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || "Помилка входу");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700">
-      <div className="max-w-md w-full mx-4">
-        <div className="bg-white rounded-lg shadow-xl p-8">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">HRS WEB</h1>
-            <p className="text-gray-600 mt-2">Вход в систему управления</p>
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "#0f172a",
+        color: "#e5e7eb",
+      }}
+    >
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          width: 360,
+          padding: 24,
+          borderRadius: 12,
+          background: "#020617",
+          boxShadow: "0 20px 40px rgba(0,0,0,0.6)",
+        }}
+      >
+        <h2 style={{ fontSize: 22, marginBottom: 16, textAlign: "center" }}>
+          HRS Admin Login
+        </h2>
+
+        {error && (
+          <div
+            style={{
+              background: "#7f1d1d",
+              color: "#fecaca",
+              padding: "8px 12px",
+              borderRadius: 8,
+              marginBottom: 12,
+              fontSize: 14,
+            }}
+          >
+            {error}
           </div>
+        )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-                {error}
-              </div>
-            )}
-
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
-                placeholder="admin@hrs.com"
-                required
-              />
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Пароль
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
-                placeholder="••••••••"
-                required
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-primary-600 text-white py-3 px-4 rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
-            >
-              {loading ? 'Вход...' : 'Войти'}
-            </button>
-          </form>
-
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              Если Вы сменили пароль и не помните его, обратитесь к администратору системы.
-            </p>
-          </div>
+        <div style={{ marginBottom: 12 }}>
+          <label style={{ fontSize: 14 }}>Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            style={{
+              width: "100%",
+              height: 40,
+              marginTop: 4,
+              borderRadius: 8,
+              border: "1px solid #334155",
+              background: "#020617",
+              color: "#e5e7eb",
+              padding: "0 12px",
+            }}
+          />
         </div>
-      </div>
+
+        <div style={{ marginBottom: 16 }}>
+          <label style={{ fontSize: 14 }}>Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            style={{
+              width: "100%",
+              height: 40,
+              marginTop: 4,
+              borderRadius: 8,
+              border: "1px solid #334155",
+              background: "#020617",
+              color: "#e5e7eb",
+              padding: "0 12px",
+            }}
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            width: "100%",
+            height: 42,
+            borderRadius: 10,
+            border: "none",
+            background: loading ? "#475569" : "#22d3ee",
+            color: "#020617",
+            fontWeight: 600,
+            cursor: loading ? "not-allowed" : "pointer",
+          }}
+        >
+          {loading ? "Вхід..." : "Увійти"}
+        </button>
+      </form>
     </div>
   );
 };

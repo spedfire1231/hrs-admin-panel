@@ -48,7 +48,7 @@ const Login = () => {
         }}
       >
         <h2 style={{ fontSize: 22, marginBottom: 16, textAlign: "center" }}>
-          HRS Admin Login
+          HRS WEB Login
         </h2>
 
         {error && (

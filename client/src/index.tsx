@@ -10,6 +10,7 @@ import "./styles/base.css";
 import "./styles/components.css";
 import "./styles/users-v3.css";
 import "./styles/dashboard-cyber.css";
+import "./styles/layout.css";
 
 const root = createRoot(document.getElementById("root")!);
 

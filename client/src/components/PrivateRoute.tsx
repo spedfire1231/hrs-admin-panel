@@ -1,19 +1,24 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
-const PrivateRoute: React.FC = () => {
-  const { user, loading } = useAuth();
+type Props = {
+  allowedRoles?: string[];
+};
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
-      </div>
-    );
+const PrivateRoute = ({ allowedRoles }: Props) => {
+  const { user, role, loading } = useAuth();
+
+  if (loading) return null;
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
   }
 
-  return user ? <Outlet /> : <Navigate to="/login" replace />;
+  if (allowedRoles && (!role || !allowedRoles.includes(role))) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <Outlet />;
 };
 
 export default PrivateRoute;

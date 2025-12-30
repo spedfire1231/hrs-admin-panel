@@ -1,21 +1,53 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 
-const AuthContext = createContext<any>(null);
+type UserRole = "admin" | "hr" | "viewer";
 
-export const AuthProvider = ({ children }: any) => {
+interface AuthContextType {
+  user: any;
+  role: UserRole | null;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  loading: boolean;
+}
+
+const AuthContext = createContext<AuthContextType>({} as AuthContextType);
+
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<any>(null);
+  const [role, setRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const loadProfile = async (userId: string) => {
+    const { data } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", userId)
+      .single();
+
+    setRole(data?.role ?? "viewer");
+  };
+
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user);
+    supabase.auth.getSession().then(({ data }) => {
+      const sessionUser = data.session?.user;
+      if (sessionUser) {
+        setUser(sessionUser);
+        loadProfile(sessionUser.id);
+      }
       setLoading(false);
     });
 
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        const sessionUser = session?.user;
+        setUser(sessionUser ?? null);
+        if (sessionUser) loadProfile(sessionUser.id);
+        else setRole(null);
+      }
+    );
+
+    return () => listener.subscription.unsubscribe();
   }, []);
 
   const login = async (email: string, password: string) => {
@@ -23,16 +55,17 @@ export const AuthProvider = ({ children }: any) => {
       email,
       password,
     });
-
     if (error) throw error;
   };
 
   const logout = async () => {
     await supabase.auth.signOut();
+    setUser(null);
+    setRole(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, role, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

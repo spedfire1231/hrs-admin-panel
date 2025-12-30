@@ -1,5 +1,4 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import { AuthProvider } from "./context/AuthContext";
 import { SocketProvider } from "./context/SocketContext";
@@ -20,22 +19,33 @@ function App() {
   return (
     <AuthProvider>
       <SocketProvider>
-        <div className="min-h-screen bg-gray-50">
-          <Routes>
-            <Route path="/login" element={<Login />} />
+        <Routes>
+          {/* ---------- PUBLIC ---------- */}
+          <Route path="/login" element={<Login />} />
 
-            <Route element={<PrivateRoute />}>
-              <Route element={<Layout />}>
-                <Route path="/" element={<Dashboard />} />
+          {/* ---------- PROTECTED ---------- */}
+          <Route element={<PrivateRoute />}>
+            <Route element={<Layout />}>
+              <Route path="/" element={<Dashboard />} />
+
+              {/* admin only */}
+              <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
                 <Route path="/users" element={<Users />} />
+                <Route path="/settings" element={<Settings />} />
+              </Route>
+
+              {/* admin + hr */}
+              <Route element={<PrivateRoute allowedRoles={["admin", "hr"]} />}>
                 <Route path="/scripts" element={<Scripts />} />
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/questions" element={<Questions />} />
-                <Route path="/settings" element={<Settings />} />
               </Route>
             </Route>
-          </Routes>
-        </div>
+          </Route>
+
+          {/* ---------- FALLBACK ---------- */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
       </SocketProvider>
     </AuthProvider>
   );

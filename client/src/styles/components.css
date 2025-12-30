@@ -183,3 +183,20 @@
   color: var(--accent-danger);
   border-color: rgba(239,68,68,.35);
 }
+
+.cy-textarea {
+  width: 100%;
+  min-height: 180px;
+  border-radius: 14px;
+  border: 1px solid rgba(15,23,42,.12);
+  background: rgba(255,255,255,.78);
+  padding: 12px;
+  color: var(--text-main);
+  outline: none;
+  resize: vertical;
+}
+
+.cy-textarea:focus {
+  border-color: rgba(79,70,229,.35);
+  box-shadow: 0 0 0 3px rgba(79,70,229,.16);
+}

@@ -19,6 +19,7 @@
     "gh-pages": "^6.3.0"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.89.0",
     "@vercel/node": "^3.0.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^8.20.4"
